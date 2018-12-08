@@ -6,12 +6,8 @@ import (
 	"grpc-go/ocr"
 	"net"
 	"google.golang.org/grpc"
-	//"github.com/otiai10/gosseract"
-	"mime/multipart"
-	"fmt"
-	"io/ioutil"
-	"bytes"
-	"net/http"
+
+	"github.com/otiai10/gosseract"
 )
 
 type OcrService struct {
@@ -23,40 +19,25 @@ func (o* OcrService) GetResult(ctx context.Context, in *ocr.File)(*ocr.OcrResult
 	result:=&ocr.OcrResult{}
 
 
-	//client:=gosseract.NewClient()
-	//
-	//defer client.Close()
-	//
-	//err:=client.SetImageFromBytes(in.Bytes)
+	client:=gosseract.NewClient()
 
-	//if err!=nil {
-	//
-	//	result.Code=300
-	//	result.Message="load image error"
-	//	return result,nil
-	//}
+	defer client.Close()
 
-	buff := bytes.NewBuffer(in.Bytes)
-	writer := multipart.NewWriter(buff)
+	err:=client.SetImageFromBytes(in.Bytes)
 
-	writer.WriteField("field", "this is a field")
-	w, _ := writer.CreateFormFile("file", "t.png")
-	w.Write([]byte(in.Bytes))
-	writer.Close()
-	var httpClient http.Client
-	resp, err := httpClient.Post("http://127.0.0.1:8080/file", writer.FormDataContentType(), buff)
-	if err != nil {
-		fmt.Println(err)
+	if err!=nil {
+
+		result.Code=300
+		result.Message="load image error"
+		return result,nil
 	}
-	defer resp.Body.Close()
-	data, _ := ioutil.ReadAll(resp.Body)
 
 	//获取到识别后的文字
-	//text,_:=client.Text()
+	text,_:=client.Text()
 
 	result.Code=200
 	result.Message="success"
-	result.Data=string(data)
+	result.Data=text
 
 	return result,nil
 
