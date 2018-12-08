@@ -1,0 +1,22 @@
+syntax="proto3";
+
+package ocr;
+
+message OcrResult {
+
+    int64 code = 1;
+    string message = 2;
+    string data = 3;
+
+}
+
+message File{
+
+    bytes bytes = 1;
+}
+
+service OcrService{
+
+    rpc GetResult(File)returns (OcrResult){}
+
+}
