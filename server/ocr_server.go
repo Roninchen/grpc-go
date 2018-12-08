@@ -22,20 +22,6 @@ func (o* OcrService) GetResult(ctx context.Context, in *ocr.File)(*ocr.OcrResult
 
 	result:=&ocr.OcrResult{}
 
-
-	//client:=gosseract.NewClient()
-	//
-	//defer client.Close()
-	//
-	//err:=client.SetImageFromBytes(in.Bytes)
-
-	//if err!=nil {
-	//
-	//	result.Code=300
-	//	result.Message="load image error"
-	//	return result,nil
-	//}
-
 	buff := bytes.NewBuffer(in.Bytes)
 	writer := multipart.NewWriter(buff)
 
@@ -50,9 +36,6 @@ func (o* OcrService) GetResult(ctx context.Context, in *ocr.File)(*ocr.OcrResult
 	}
 	defer resp.Body.Close()
 	data, _ := ioutil.ReadAll(resp.Body)
-
-	//获取到识别后的文字
-	//text,_:=client.Text()
 
 	result.Code=200
 	result.Message="success"
