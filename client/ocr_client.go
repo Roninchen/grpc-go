@@ -22,7 +22,7 @@ func main() {
 
 	ocrClient:=ocr.NewOcrServiceClient(coon)
 
-	bytes,err:=ioutil.ReadFile("C://myuser//hyperchain.png")
+	bytes,err:=ioutil.ReadFile("image.png")
 
 	if err!=nil {
 		panic("open file error")
