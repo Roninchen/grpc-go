@@ -1,31 +1,20 @@
-
 syntax="proto3";
-
 package book;
-
 message BookInfoParams{
-
     int32 book_id = 1;
 }
-
 message BookInfo{
     int32 book_id = 1;
     string book_name = 2;
 }
-
-message BookListParms{
+message BookListParams{
     int32 page=1;
     int32 limit=2;
 }
-
 message BookList{
-
     repeated BookInfo book_list = 1;
-
 }
-
 service BookService{
-
     rpc GetBookInfo(BookInfoParams) returns (BookInfo){}
-    rpc GetBookList(BookListParms) returns (BookList){}
+    rpc GetBookList(BookListParams) returns (BookList){}
 }
